@@ -1,10 +1,107 @@
 html {
   /* Prevents padding from adding extra width/height to the page and the appearance of scrollbars */
   box-sizing: border-box;
+  font-family: sans-serif;
 }
 
 body {
   margin: 0;
   /* vh stands for viewport height, which is the full height of the entire window you're in. With this setting we want to always stretch our background to the full height of the screen.*/
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.video-background {
+  position: fixed; /*makes the background stays in place while scrolling thru the page*/
+  height: auto;
+  width: 100vw; /* entire width of the display window*/
+  z-index: -1;
+}
+
+.video-overlay {
+  background-color: rgba(255, 255, 255, 0.35);
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+}
+
+.container {
+  min-width: 500px;
+  min-height: 300px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 25px 50px;
+  color:rgb(97, 96, 96)
+}
+
+h1 {
+  color:rgb(98, 168, 165);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 200px;
+  width: auto;
+}
+
+input {
+  outline: none;
+  width: 400px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  padding: 0 10px;
+  -webkit-box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  -moz-box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  margin-left: 20px;
+}
+
+button {
+  background-color: rgb(98, 168, 165);
+  border: none;
+  border-radius: 10px;
+  width: 90px;
+  height: 40px;
+  color:rgb(255, 244, 244);
+  font-weight: bold;
+  -webkit-box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  -moz-box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  box-shadow: 6px 8px 12px -8px rgba(158,155,158,1);
+  margin-top: 10px;
+  outline: none;
+}
+
+button:hover {
+  background-color: rgb(77, 145, 142);
+}
+
+button:active {
+  transform: translateY(4px);
+}
+
+
+
+
+
+@media screen and (max-width: 600px) {
+  .video-background {
+    height: 100vh;
+    width: 100vw;
+  }
+
+  video {
+    object-fit: cover; /* to fit the whole screen */
+    object-position: 40%; /* portion of the picture we want to show on the screen */
+  }
+}
+
