@@ -40,6 +40,13 @@ body {
   color:rgb(97, 96, 96)
 }
 
+.input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 h1 {
   color:rgb(98, 168, 165);
 }
