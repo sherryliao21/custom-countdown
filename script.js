@@ -10,6 +10,8 @@ const timeEl = document.querySelectorAll('span')
 const inputContainer = document.querySelector('#input-container')
 const countdownContainer = document.querySelector('#countdown')
 
+let countdownActive
+
 // set event listener on countdown Form to monitor all input values at once
 function updateCountdown() {
   eventForm.addEventListener('submit', (e) => {
@@ -17,16 +19,17 @@ function updateCountdown() {
     let inputDate = ''
 
     e.preventDefault()
-    checkInput()
+    if (checkInput() === false) {
+      return
+    }
 
     inputTitle = e.target.children[0].children[1].value
     inputDate = e.target.children[1].children[1].value
 
-    const timeRemaining = getCountdownTime(inputDate) // get timeRemaining
-    updateDOM(inputTitle, timeRemaining)
-    // hide input page and switch to countdown page
-    inputContainer.hidden = true
-    countdownContainer.hidden = false
+    countdownActive = setInterval(() => {
+      const timeRemaining = getCountdownTime(inputDate)
+      updateDOM(inputTitle, timeRemaining)
+    }, 1000)
   })
 }
 
@@ -37,6 +40,9 @@ function updateDOM(inputTitle, timeRemaining) {
   timeEl[1].innerText = remaining[1]
   timeEl[2].innerText = remaining[2]
   timeEl[3].innerText = remaining[3]
+  // hide input page and switch to countdown page
+  inputContainer.hidden = true
+  countdownContainer.hidden = false
 }
 
 
@@ -62,14 +68,17 @@ function getCountdownTime(input) {
 }
 
 function checkInput() {
-  if (eventTitle.value === '') {
-    return alert('please type an event name')
+  if (eventTitle.value.trim('') === '') {
+    alert('please type an event name')
+    return false
   }
   if (datePicker.value === '') {
-    return alert('please select a date')
+    alert('please select a date')
+    return false
   }
 }
 
+// main code
 inputContainer.hidden = false
 datePicker.setAttribute("min", today)
 updateCountdown()
