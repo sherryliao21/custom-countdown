@@ -11,27 +11,7 @@ const inputContainer = document.querySelector('#input-container')
 const countdownContainer = document.querySelector('#countdown')
 
 let countdownActive
-
-// set event listener on countdown Form to monitor all input values at once
-function updateCountdown() {
-  eventForm.addEventListener('submit', (e) => {
-    let inputTitle = ''
-    let inputDate = ''
-
-    e.preventDefault()
-    if (checkInput() === false) {
-      return
-    }
-
-    inputTitle = e.target.children[0].children[1].value
-    inputDate = e.target.children[1].children[1].value
-
-    countdownActive = setInterval(() => {
-      const timeRemaining = getCountdownTime(inputDate)
-      updateDOM(inputTitle, timeRemaining)
-    }, 1000)
-  })
-}
+const resetBtn = document.querySelector('#reset-button')
 
 function updateDOM(inputTitle, timeRemaining) {
   countdownTitle.innerText = inputTitle
@@ -78,7 +58,36 @@ function checkInput() {
   }
 }
 
+function submitCountdown(e) {
+  let inputTitle = ''
+  let inputDate = ''
+
+  e.preventDefault()
+  if (checkInput() === false) {
+    return
+  }
+
+  inputTitle = e.target.children[0].children[1].value
+  inputDate = e.target.children[1].children[1].value
+
+  countdownActive = setInterval(() => {
+    const timeRemaining = getCountdownTime(inputDate)
+    updateDOM(inputTitle, timeRemaining)
+  }, 1000)
+}
+
+function resetCountdown(e) {
+  // hide countdowns and show input
+  inputContainer.hidden = false
+  countdownContainer.hidden = true
+
+  clearInterval(countdownActive)
+  inputTitle = ''
+  inputDate = ''
+}
+
 // main code
 inputContainer.hidden = false
 datePicker.setAttribute("min", today)
-updateCountdown()
+eventForm.addEventListener('submit', (e) => submitCountdown(e))
+resetBtn.addEventListener('click', (e) => resetCountdown(e))

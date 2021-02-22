@@ -111,7 +111,7 @@ ul {
   max-width: 500px;
   max-height: 200px;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 li {
@@ -129,7 +129,7 @@ li span {
   margin-bottom: 10px;
 }
 
-#countdown-button {
+#reset-button {
   background-color: rgb(238, 174, 113);
 }
 
