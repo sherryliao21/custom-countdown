@@ -7,11 +7,17 @@ const today = new Date().toISOString().split('T')[0]
 const countdownTitle = document.querySelector('#countdown-title')
 const timeEl = document.querySelectorAll('span')
 
+let inputTitle = ''
+let inputDate = ''
+
 const inputContainer = document.querySelector('#input-container')
 const countdownContainer = document.querySelector('#countdown')
+const completeContainer = document.querySelector('#complete')
 
 let countdownActive
 const resetBtn = document.querySelector('#reset-button')
+
+const completeInfo = document.querySelector('.complete-info')
 
 function updateDOM(inputTitle, timeRemaining) {
   countdownTitle.innerText = inputTitle
@@ -59,8 +65,6 @@ function checkInput() {
 }
 
 function submitCountdown(e) {
-  let inputTitle = ''
-  let inputDate = ''
 
   e.preventDefault()
   if (checkInput() === false) {
@@ -72,8 +76,19 @@ function submitCountdown(e) {
 
   countdownActive = setInterval(() => {
     const timeRemaining = getCountdownTime(inputDate)
-    updateDOM(inputTitle, timeRemaining)
+    if (timeRemaining < 0) {
+      clearInterval(countdownActive)
+      showCompleteInfo()
+    } else {
+      updateDOM(inputTitle, timeRemaining)
+    }
   }, 1000)
+}
+
+function showCompleteInfo() {
+  completeInfo.innerHTML = `${inputTitle} completed on ${inputDate}`
+  completeContainer.hidden = false
+  inputContainer.hidden = true
 }
 
 function resetCountdown(e) {
