@@ -18,6 +18,61 @@ let countdownActive
 const resetBtn = document.querySelector('#reset-button')
 
 const completeInfo = document.querySelector('.complete-info')
+const completeBtn = document.querySelector('#complete-button')
+
+let savedCountdown
+
+function submitCountdown(e) {
+  e.preventDefault()
+  if (checkInput() === false) {
+    return
+  }
+  inputTitle = e.target.children[0].children[1].value
+  inputDate = e.target.children[1].children[1].value
+  activateCountdown()
+}
+
+function activateCountdown() {
+  countdownActive = setInterval(() => {
+    const timeRemaining = getCountdownTime(inputDate)
+    if (timeRemaining < 0) {
+      clearInterval(countdownActive)
+      showCompleteInfo()
+    } else {
+      updateDOM(inputTitle, timeRemaining)
+      // store countdown info in loaclstorage
+      savedCountdown = {
+        event: inputTitle,
+        date: inputDate
+      }
+      localStorage.setItem('countdown', JSON.stringify(savedCountdown))
+    }
+  }, 1000)
+}
+
+function checkInput() {
+  if (eventTitle.value.trim('') === '') {
+    alert('please type an event name')
+    return false
+  }
+  if (datePicker.value === '') {
+    alert('please select a date')
+    return false
+  }
+}
+
+function getCountdownTime(input) {
+  let countdownValue = new Date(input).getTime()
+  let now = Date.now()
+  let timeRemaining = countdownValue - now
+  return timeRemaining
+}
+
+function showCompleteInfo() {
+  completeInfo.innerHTML = `${inputTitle} completed on ${inputDate}`
+  completeContainer.hidden = false
+  inputContainer.hidden = true
+}
 
 function updateDOM(inputTitle, timeRemaining) {
   countdownTitle.innerText = inputTitle
@@ -30,7 +85,6 @@ function updateDOM(inputTitle, timeRemaining) {
   inputContainer.hidden = true
   countdownContainer.hidden = false
 }
-
 
 function calculateTime(time) {
   const sec = 1000
@@ -45,64 +99,32 @@ function calculateTime(time) {
   return remaining
 }
 
-
-function getCountdownTime(input) {
-  let countdownValue = new Date(input).getTime()
-  let now = Date.now()
-  let timeRemaining = countdownValue - now
-  return timeRemaining
-}
-
-function checkInput() {
-  if (eventTitle.value.trim('') === '') {
-    alert('please type an event name')
-    return false
-  }
-  if (datePicker.value === '') {
-    alert('please select a date')
-    return false
-  }
-}
-
-function submitCountdown(e) {
-
-  e.preventDefault()
-  if (checkInput() === false) {
-    return
-  }
-
-  inputTitle = e.target.children[0].children[1].value
-  inputDate = e.target.children[1].children[1].value
-
-  countdownActive = setInterval(() => {
-    const timeRemaining = getCountdownTime(inputDate)
-    if (timeRemaining < 0) {
-      clearInterval(countdownActive)
-      showCompleteInfo()
-    } else {
-      updateDOM(inputTitle, timeRemaining)
-    }
-  }, 1000)
-}
-
-function showCompleteInfo() {
-  completeInfo.innerHTML = `${inputTitle} completed on ${inputDate}`
-  completeContainer.hidden = false
-  inputContainer.hidden = true
-}
-
 function resetCountdown(e) {
   // hide countdowns and show input
   inputContainer.hidden = false
+  completeContainer.hidden = true
   countdownContainer.hidden = true
-
   clearInterval(countdownActive)
-  inputTitle = ''
-  inputDate = ''
+  eventTitle.value = ''
+  eventDate.value = ''
+  localStorage.removeItem('countdown')
+}
+
+function restoreSavedCountdown() {
+  if (localStorage.getItem('countdown')) {
+    countdownContainer.hidden = false
+    savedCountdown = JSON.parse(localStorage.getItem('countdown'))
+    inputTitle = savedCountdown.event
+    inputDate = new Date(savedCountdown.date).getTime()
+    activateCountdown()
+  } else {
+    inputContainer.hidden = false
+  }
 }
 
 // main code
-inputContainer.hidden = false
+restoreSavedCountdown()
 datePicker.setAttribute("min", today)
 eventForm.addEventListener('submit', (e) => submitCountdown(e))
 resetBtn.addEventListener('click', (e) => resetCountdown(e))
+completeBtn.addEventListener('click', (e) => resetCountdown(e))
