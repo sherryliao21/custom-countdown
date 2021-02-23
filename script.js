@@ -1,26 +1,22 @@
+const inputContainer = document.querySelector('#input-container')
 const eventTitle = document.querySelector('#title')
 const eventDate = document.querySelector('#date-picker')
 const eventForm = document.querySelector('#countdownForm')
 const datePicker = document.querySelector('#date-picker')
 const today = new Date().toISOString().split('T')[0]
-
-const countdownTitle = document.querySelector('#countdown-title')
-const timeEl = document.querySelectorAll('span')
-
 let inputTitle = ''
 let inputDate = ''
 
-const inputContainer = document.querySelector('#input-container')
 const countdownContainer = document.querySelector('#countdown')
-const completeContainer = document.querySelector('#complete')
+const countdownTitle = document.querySelector('#countdown-title')
+const timeEl = document.querySelectorAll('span')
+let savedCountdown
 
+const completeContainer = document.querySelector('#complete')
 let countdownActive
 const resetBtn = document.querySelector('#reset-button')
-
 const completeInfo = document.querySelector('.complete-info')
 const completeBtn = document.querySelector('#complete-button')
-
-let savedCountdown
 
 function submitCountdown(e) {
   e.preventDefault()
@@ -77,10 +73,13 @@ function showCompleteInfo() {
 function updateDOM(inputTitle, timeRemaining) {
   countdownTitle.innerText = inputTitle
   const remaining = calculateTime(timeRemaining)
-  timeEl[0].innerText = remaining[0]
-  timeEl[1].innerText = remaining[1]
-  timeEl[2].innerText = remaining[2]
-  timeEl[3].innerText = remaining[3]
+  for (let i = 0; i < 4; i++) {
+    timeEl[i].innerText = remaining[i]
+  }
+  // timeEl[0].innerText = remaining[0]
+  // timeEl[1].innerText = remaining[1]
+  // timeEl[2].innerText = remaining[2]
+  // timeEl[3].innerText = remaining[3]
   // hide input page and switch to countdown page
   inputContainer.hidden = true
   countdownContainer.hidden = false
@@ -112,11 +111,11 @@ function resetCountdown(e) {
 
 function restoreSavedCountdown() {
   if (localStorage.getItem('countdown')) {
-    countdownContainer.hidden = false
     savedCountdown = JSON.parse(localStorage.getItem('countdown'))
     inputTitle = savedCountdown.event
     inputDate = new Date(savedCountdown.date).getTime()
     activateCountdown()
+    countdownContainer.hidden = false
   } else {
     inputContainer.hidden = false
   }
