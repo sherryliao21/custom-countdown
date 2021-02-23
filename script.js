@@ -1,3 +1,4 @@
+// input page assignments
 const inputContainer = document.querySelector('#input-container')
 const eventTitle = document.querySelector('#title')
 const eventDate = document.querySelector('#date-picker')
@@ -6,18 +7,19 @@ const datePicker = document.querySelector('#date-picker')
 const today = new Date().toISOString().split('T')[0]
 let inputTitle = ''
 let inputDate = ''
-
+// countdown page assignments
 const countdownContainer = document.querySelector('#countdown')
 const countdownTitle = document.querySelector('#countdown-title')
 const timeEl = document.querySelectorAll('span')
 let savedCountdown
-
+// complete page assignments
 const completeContainer = document.querySelector('#complete')
 let countdownActive
 const resetBtn = document.querySelector('#reset-button')
 const completeInfo = document.querySelector('.complete-info')
 const completeBtn = document.querySelector('#complete-button')
 
+// functions
 function submitCountdown(e) {
   e.preventDefault()
   if (checkInput() === false) {
@@ -36,8 +38,7 @@ function activateCountdown() {
       showCompleteInfo()
     } else {
       updateDOM(inputTitle, timeRemaining)
-      // store countdown info in loaclstorage
-      savedCountdown = {
+      savedCountdown = { // store countdown info in loaclstorage
         event: inputTitle,
         date: inputDate
       }
@@ -76,11 +77,6 @@ function updateDOM(inputTitle, timeRemaining) {
   for (let i = 0; i < 4; i++) {
     timeEl[i].innerText = remaining[i]
   }
-  // timeEl[0].innerText = remaining[0]
-  // timeEl[1].innerText = remaining[1]
-  // timeEl[2].innerText = remaining[2]
-  // timeEl[3].innerText = remaining[3]
-  // hide input page and switch to countdown page
   inputContainer.hidden = true
   countdownContainer.hidden = false
 }
@@ -99,7 +95,6 @@ function calculateTime(time) {
 }
 
 function resetCountdown(e) {
-  // hide countdowns and show input
   inputContainer.hidden = false
   completeContainer.hidden = true
   countdownContainer.hidden = true
