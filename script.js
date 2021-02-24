@@ -38,7 +38,7 @@ function activateCountdown() {
       showCompleteInfo()
     } else {
       updateDOM(inputTitle, timeRemaining)
-      savedCountdown = { // store countdown info in loaclstorage
+      savedCountdown = { // store countdown info in localstorage
         event: inputTitle,
         date: inputDate
       }
@@ -119,6 +119,6 @@ function restoreSavedCountdown() {
 // main code
 restoreSavedCountdown()
 datePicker.setAttribute("min", today)
-eventForm.addEventListener('submit', (e) => submitCountdown(e))
-resetBtn.addEventListener('click', (e) => resetCountdown(e))
-completeBtn.addEventListener('click', (e) => resetCountdown(e))
+eventForm.addEventListener('submit', submitCountdown)
+resetBtn.addEventListener('click', resetCountdown)
+completeBtn.addEventListener('click', resetCountdown)
