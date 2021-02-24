@@ -9,4 +9,4 @@ A frontend-only countdown web app for single event.
 3. Users are able to restore unfinished countdown information from browser's localstorage every time they access the page. 
 
 ## Demo page
-https://sherryliao21.github.io/custom-countdown/
+https://sherryliao21.github.io/custom-countdown-frontend-only/
